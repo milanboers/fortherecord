@@ -1,5 +1,6 @@
 package nl.milanboers.recordcollector;
 
+import nl.milanboers.recordcollector.search.SearchActivity;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

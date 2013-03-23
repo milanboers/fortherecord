@@ -13,11 +13,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 public class Discogs {
+	@SuppressWarnings("unused")
 	private static final String TAG = "Discogs";
 	
 	public interface OnReadyListener {
@@ -45,15 +44,15 @@ public class Discogs {
 		return rd;
 	}
 	
-	public List<DiscogsReleasesResult> search(String query) throws ClientProtocolException, IOException {
+	public List<DiscogsMasterResult> search(String query) throws ClientProtocolException, IOException {
 		return this.search(query, 1);
 	}
 	
-	public List<DiscogsReleasesResult> search(String query, int page) throws ClientProtocolException, IOException {
+	public List<DiscogsMasterResult> search(String query, int page) throws ClientProtocolException, IOException {
 		// Encode so spaces become +
 		query = URLEncoder.encode(query, "UTF-8");
 		Reader r = this.get("database/search?type=master&page=" + page + "&q=" + query);
-		DiscogsRelease response = gson.fromJson(r, DiscogsRelease.class);
+		DiscogsMaster response = gson.fromJson(r, DiscogsMaster.class);
 		return response.results;
 	}
 }

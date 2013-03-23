@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="nl.milanboers.recordcollector.SearchActivity"
+            android:name="nl.milanboers.recordcollector.search.SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
     </application>
