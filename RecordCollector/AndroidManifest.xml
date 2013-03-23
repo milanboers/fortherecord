@@ -3,7 +3,7 @@
     package="nl.milanboers.recordcollector"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
@@ -27,6 +27,20 @@
         <activity
             android:name="nl.milanboers.recordcollector.search.SearchActivity"
             android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name="nl.milanboers.recordcollector.record.RecordActivity"
+            android:label="@string/title_activity_record" >
+        </activity>
+        <activity
+            android:name="nl.milanboers.recordcollector.image.ImageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_image"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="nl.milanboers.recordcollector.image.ImageActivity"
+            android:label="@string/title_activity_image" >
         </activity>
     </application>
 

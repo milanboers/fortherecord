@@ -6,5 +6,9 @@
     <string name="search">Search</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="error1">Could not fetch data. Do you have a network connection available?</string>
+    <string name="album_art">Album art</string>
+    <string name="title_activity_record">RecordActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_image">ImageActivity</string>
 
 </resources>

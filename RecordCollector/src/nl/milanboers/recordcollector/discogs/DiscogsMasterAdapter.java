@@ -31,8 +31,9 @@ public class DiscogsMasterAdapter extends ArrayAdapter<DiscogsMasterResult> {
 		
 		DiscogsMasterResult result = this.results.get(position);
 		if(result != null) {
+			// Fill the widgets
 			TextView title = (TextView) v.findViewById(R.id.record_item_title);
-			if(title != null) title.setText(result.title);
+			title.setText(result.title);
 		}
 		return v;
 	}

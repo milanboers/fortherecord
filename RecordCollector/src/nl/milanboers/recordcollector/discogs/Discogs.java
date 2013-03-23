@@ -15,6 +15,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.google.gson.Gson;
 
+/**
+ * This is a singleton so no new object (and Gson object with it) has to be made
+ * every time you load a next page or search something.
+ * 
+ * @author Milan Boers
+ * 
+ */
 public class Discogs {
 	@SuppressWarnings("unused")
 	private static final String TAG = "Discogs";

@@ -16,8 +16,9 @@ public class SearchTask extends AsyncTask<Void, Void, List<DiscogsMasterResult>>
 	public interface OnSearchCompletedListener {
 		public void onSearchCompleted(List<DiscogsMasterResult> results);
 	}
-
+	
 	private OnSearchCompletedListener onReadyHandler;
+	
 	private Discogs discogs;
 	private String query;
 	private int page;
@@ -43,6 +44,7 @@ public class SearchTask extends AsyncTask<Void, Void, List<DiscogsMasterResult>>
 		return null;
 	}
 	
+	@Override
 	protected void onPostExecute(List<DiscogsMasterResult> results) {
 		this.onReadyHandler.onSearchCompleted(results);
 	}

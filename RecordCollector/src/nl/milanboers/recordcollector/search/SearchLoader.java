@@ -38,6 +38,7 @@ public class SearchLoader implements LoadingListView.Loader {
 	
 	@Override
 	public void load(int page) {
+		// TODO: Make sure it stops at the right page
 		// If there's no query or it's already loading, we ignore this
 		if(this.currentQuery == null || this.searching == true)
 			return;
