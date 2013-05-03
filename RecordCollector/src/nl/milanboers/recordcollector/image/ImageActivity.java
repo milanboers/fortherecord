@@ -3,15 +3,13 @@ package nl.milanboers.recordcollector.image;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import nl.milanboers.recordcollector.R;
-import nl.milanboers.recordcollector.R.layout;
-import nl.milanboers.recordcollector.R.menu;
-import nl.milanboers.recordcollector.record.ImageLoadTask;
+import nl.milanboers.recordcollector.master.ImageLoadTask;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 import android.widget.ImageView;
 
 public class ImageActivity extends SherlockActivity {
+	@SuppressWarnings("unused")
+	private static final String TAG = "ImageActivity";
 	
 	private ImageView imageView;
 

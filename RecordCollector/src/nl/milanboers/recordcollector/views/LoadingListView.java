@@ -30,7 +30,7 @@ public class LoadingListView extends ListView {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				// If it's not currently loading and it's at the end, load the next page
-				if(!LoadingListView.this.loader.isLoading() && firstVisibleItem + visibleItemCount >= totalItemCount) {
+				if(!LoadingListView.this.loader.isLoading() && firstVisibleItem + visibleItemCount >= totalItemCount - 5) {
 					LoadingListView.this.loadNext();
 				}
 			}
