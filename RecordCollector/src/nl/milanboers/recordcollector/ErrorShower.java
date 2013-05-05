@@ -16,6 +16,12 @@ public class ErrorShower {
 			}
 		};
 		
-		Toast.makeText(ctx, errorMessages.get(error), Toast.LENGTH_LONG).show();
+		String errorStr;
+		if(error != null)
+			errorStr = errorMessages.get(error);
+		else
+			errorStr = ctx.getString(R.string.error_inerror);
+		
+		Toast.makeText(ctx, errorStr, Toast.LENGTH_LONG).show();
 	}
 }

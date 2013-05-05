@@ -55,39 +55,10 @@ public class SearchLoader implements LoadingListView.Loader {
 			return;
 		
 		// Make Search Task
-		AsyncTask<Void, Void, DiscogsSimpleMasterResponse> st = new AsyncTask<Void, Void, DiscogsSimpleMasterResponse>() {
-			private ErrorType error;
-			
-			@Override
-			protected DiscogsSimpleMasterResponse doInBackground(Void... params) {
-				try {
-					return Discogs.getInstance().search(SearchLoader.this.currentQuery, page);
-				} catch (ClientProtocolException e) {
-					this.error = ErrorType.PROTOCOL;
-					return null;
-				} catch (IOException e) {
-					this.error = ErrorType.IO;
-					return null;
-				}
-			}
-			
-			@Override
-			protected void onPostExecute(DiscogsSimpleMasterResponse response) {
-				if(response == null) {
-					// Error
-					SearchLoader.this.onSearchCompletedListener.onError(this.error);
-					return;
-				}
-				// Success!
-				SearchLoader.this.searching = false;
-				SearchLoader.this.pages = response.pagination.pages;
-				if(SearchLoader.this.onSearchCompletedListener != null)
-					SearchLoader.this.onSearchCompletedListener.onSearchCompleted(response.results);
-			}
-		};
-		
+		AsyncTask<Void, Void, DiscogsSimpleMasterResponse> st = new SearchTask(page);
 		// Execute the search
 		st.execute();
+		
 		// Set loading flag
 		this.searching = true;
 		if(SearchLoader.this.onSearchStartedListener != null)
@@ -99,4 +70,39 @@ public class SearchLoader implements LoadingListView.Loader {
 		return this.searching;
 	}
 	
+	private class SearchTask extends AsyncTask<Void, Void, DiscogsSimpleMasterResponse> {
+		private ErrorType error;
+		private int page;
+		
+		public SearchTask(int page) {
+			this.page = page;
+		}
+		
+		@Override
+		protected DiscogsSimpleMasterResponse doInBackground(Void... params) {
+			try {
+				return Discogs.getInstance().search(SearchLoader.this.currentQuery, this.page);
+			} catch (ClientProtocolException e) {
+				this.error = ErrorType.PROTOCOL;
+				return null;
+			} catch (IOException e) {
+				this.error = ErrorType.IO;
+				return null;
+			}
+		}
+		
+		@Override
+		protected void onPostExecute(DiscogsSimpleMasterResponse response) {
+			if(response == null) {
+				// Error
+				SearchLoader.this.onSearchCompletedListener.onError(this.error);
+				return;
+			}
+			// Success!
+			SearchLoader.this.searching = false;
+			SearchLoader.this.pages = response.pagination.pages;
+			if(SearchLoader.this.onSearchCompletedListener != null)
+				SearchLoader.this.onSearchCompletedListener.onSearchCompleted(response.results);
+		}
+	};
 }

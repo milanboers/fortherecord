@@ -14,5 +14,6 @@
     
     <string name="error_io">Could not fetch data. Do you have a network connection available?</string>
     <string name="error_protocol">Protocol error. Please contact the author of this app.</string>
+    <string name="error_inerror">There\'s an error, but I have no idea what the error is. This is bad stuff. Contact the author of the app.</string>
     
 </resources>
