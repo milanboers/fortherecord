@@ -57,7 +57,7 @@ public class SearchActivity extends SherlockActivity {
 			public void onItemClick(AdapterView<?> list, View view, int pos, long id) {
 				// Start the MasterActivity when an item is clicked
 				Intent intent = new Intent(SearchActivity.this, MasterActivity.class);
-				intent.putExtra("master", SearchActivity.this.results.get(pos));
+				intent.putExtra("id", SearchActivity.this.results.get(pos).id);
 				startActivity(intent);
 			}
 		});

@@ -13,7 +13,6 @@ import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
-import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
 import nl.milanboers.recordcollector.master.fragments.MasterRecordFragment;
 import nl.milanboers.recordcollector.master.fragments.MasterTracklistFragment;
 import nl.milanboers.recordcollector.tabs.TabsActivity;
@@ -25,7 +24,7 @@ public class MasterActivity extends TabsActivity implements TabListener {
 	@SuppressWarnings("unused")
 	private static final String TAG = "RecordActivity";
 	
-	private DiscogsSimpleMaster simpleMaster;
+	private int id;
 	
 	// Fragments
 	private MasterRecordFragment recordFragment;
@@ -35,7 +34,7 @@ public class MasterActivity extends TabsActivity implements TabListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		this.simpleMaster = getIntent().getParcelableExtra("master");
+		this.id = getIntent().getIntExtra("id", -1);
 		
 		// Setup loading icon in ActionBar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -55,11 +54,6 @@ public class MasterActivity extends TabsActivity implements TabListener {
 		
 		// Record fragment
 		this.recordFragment = new MasterRecordFragment();
-		// Pass the simpleMaster to the recordFragment
-		Bundle args = new Bundle();
-		args.putParcelable("simpleMaster", this.simpleMaster);
-		recordFragment.setArguments(args);
-		
 		// Track listing fragment
 		this.tracklistFragment = new MasterTracklistFragment();
 		
@@ -79,7 +73,7 @@ public class MasterActivity extends TabsActivity implements TabListener {
 		@Override
 		protected DiscogsMaster doInBackground(Void... params) {
 			try {
-				return Discogs.getInstance().master(MasterActivity.this.simpleMaster.id);
+				return Discogs.getInstance().master(MasterActivity.this.id);
 			} catch (ClientProtocolException e) {
 				this.error = ErrorType.PROTOCOL;
 				return null;

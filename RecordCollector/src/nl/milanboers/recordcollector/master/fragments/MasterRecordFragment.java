@@ -6,11 +6,12 @@ import java.util.List;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleArtist;
-import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
 import nl.milanboers.recordcollector.image.ImageActivity;
 import nl.milanboers.recordcollector.master.ImageLoadTask;
 import nl.milanboers.recordcollector.tabs.TabFragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ public class MasterRecordFragment extends TabFragment {
 	@SuppressWarnings("unused")
 	private static String TAG = "MasterAFragment";
 	
-	private DiscogsSimpleMaster simpleMaster;
 	private DiscogsMaster master;
 	
 	private TextView titleView;
@@ -34,31 +34,21 @@ public class MasterRecordFragment extends TabFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_master_record, container, false);
 		
-		this.simpleMaster = getArguments().getParcelable("simpleMaster");
-		
 		this.titleView = (TextView) v.findViewById(R.id.master_title);
 		this.thumbView = (ImageView) v.findViewById(R.id.master_thumb);
 		this.artistView = (TextView) v.findViewById(R.id.master_artist);
-		
-		this.titleView.setText(this.simpleMaster.title);
-		
-		// Load the image
-		ImageLoadTask task = new ImageLoadTask(this.thumbView);
-		task.execute(this.simpleMaster.thumb);
 		
 		// Make sure clicking on the image opens the popup image
 		this.thumbView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), ImageActivity.class);
-				// Load the normal image if it's there, otherwise load the thumb.
-				if(MasterRecordFragment.this.master != null && 
-				   MasterRecordFragment.this.master.images != null &&
-				   MasterRecordFragment.this.master.images.size() > 0)
-					intent.putExtra("image", MasterRecordFragment.this.master.images.get(0).uri);
-				else
-					intent.putExtra("image", MasterRecordFragment.this.simpleMaster.thumb);
-				startActivity(intent);
+				// Load the normal image if it's there, otherwise don't do anything
+				Bitmap bmp = ((BitmapDrawable)MasterRecordFragment.this.thumbView.getDrawable()).getBitmap();
+				if(bmp != null) {
+					Intent intent = new Intent(getActivity(), ImageActivity.class);
+					intent.putExtra("bitmap", bmp);
+					startActivity(intent);
+				}
 			}
 		});
 		
@@ -77,6 +67,12 @@ public class MasterRecordFragment extends TabFragment {
 			artistNames.add(artist.name);
 		}
 		this.artistView.setText(TextUtils.join(", ", artistNames));
+		
+		// Load the image
+		if(this.master.images.size() > 0) {
+			ImageLoadTask task = new ImageLoadTask(this.thumbView);
+			task.execute(this.master.images.get(0).uri);
+		}
 	}
 
 	@Override
