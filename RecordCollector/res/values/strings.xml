@@ -12,6 +12,7 @@
     <string name="record">Record</string>
     <string name="track_listing">Track Listing</string>
     
-    <string name="error1">Could not fetch data. Do you have a network connection available?</string>
-
+    <string name="error_io">Could not fetch data. Do you have a network connection available?</string>
+    <string name="error_protocol">Protocol error. Please contact the author of this app.</string>
+    
 </resources>

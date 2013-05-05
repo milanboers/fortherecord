@@ -1,10 +1,15 @@
 package nl.milanboers.recordcollector.master;
 
+import java.io.IOException;
 import java.util.Arrays;
+
+import org.apache.http.client.ClientProtocolException;
 
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 
+import nl.milanboers.recordcollector.ErrorShower;
+import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
@@ -42,18 +47,29 @@ public class MasterActivity extends TabsActivity implements TabListener {
 		// Load the detailed master
 		setProgressBarIndeterminateVisibility(true);
 		AsyncTask<Void, Void, DiscogsMaster> masterLoadTask = new AsyncTask<Void, Void, DiscogsMaster>() {
+			private ErrorType error;
+			
 			@Override
 			protected DiscogsMaster doInBackground(Void... params) {
 				try {
 					return Discogs.getInstance().master(MasterActivity.this.simpleMaster.id);
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					this.error = ErrorType.PROTOCOL;
+					return null;
+				} catch (IOException e) {
+					this.error = ErrorType.IO;
 					return null;
 				}
 			}
 			
 			@Override
 			protected void onPostExecute(DiscogsMaster master) {
+				if(master == null) {
+					// Error
+					ErrorShower.showError(this.error, MasterActivity.this);
+					return;
+				}
+				// Success!
 				setProgressBarIndeterminateVisibility(false);
 				
 				MasterActivity.this.recordFragment.setMaster(master);

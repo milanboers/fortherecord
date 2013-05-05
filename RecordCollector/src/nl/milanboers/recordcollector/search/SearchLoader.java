@@ -1,9 +1,13 @@
 package nl.milanboers.recordcollector.search;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.apache.http.client.ClientProtocolException;
 
 import android.os.AsyncTask;
 
+import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMasterResponse;
@@ -16,6 +20,7 @@ public class SearchLoader implements LoadingListView.Loader {
 	}
 	public static interface OnSearchCompletedListener {
 		public void onSearchCompleted(List<DiscogsSimpleMaster> results);
+		public void onError(ErrorType error);
 	}
 	
 	// Is it currently searching?
@@ -51,19 +56,29 @@ public class SearchLoader implements LoadingListView.Loader {
 		
 		// Make Search Task
 		AsyncTask<Void, Void, DiscogsSimpleMasterResponse> st = new AsyncTask<Void, Void, DiscogsSimpleMasterResponse>() {
+			private ErrorType error;
+			
 			@Override
 			protected DiscogsSimpleMasterResponse doInBackground(Void... params) {
 				try {
 					return Discogs.getInstance().search(SearchLoader.this.currentQuery, page);
-				} catch (Exception e) {
-					// TODO: nice error?
-					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					this.error = ErrorType.PROTOCOL;
+					return null;
+				} catch (IOException e) {
+					this.error = ErrorType.IO;
 					return null;
 				}
 			}
 			
 			@Override
 			protected void onPostExecute(DiscogsSimpleMasterResponse response) {
+				if(response == null) {
+					// Error
+					SearchLoader.this.onSearchCompletedListener.onError(this.error);
+					return;
+				}
+				// Success!
 				SearchLoader.this.searching = false;
 				SearchLoader.this.pages = response.pagination.pages;
 				if(SearchLoader.this.onSearchCompletedListener != null)

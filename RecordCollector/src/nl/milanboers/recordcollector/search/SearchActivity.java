@@ -8,6 +8,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import nl.milanboers.recordcollector.ErrorShower;
+import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMasterAdapter;
@@ -18,7 +20,6 @@ import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 public class SearchActivity extends SherlockActivity {
 	@SuppressWarnings("unused")
@@ -76,18 +77,16 @@ public class SearchActivity extends SherlockActivity {
 		this.searchLoader.setOnSearchCompletedListener(new SearchLoader.OnSearchCompletedListener() {
 			@Override
 			public void onSearchCompleted(List<DiscogsSimpleMaster> results) {
-				if(results != null) {
-					// Add the results
-					SearchActivity.this.results.addAll(results);
-					SearchActivity.this.resultsAdapter.notifyDataSetChanged();
-				}
-				else
-				{
-					// Error occurred
-					Toast.makeText(SearchActivity.this, R.string.error1, Toast.LENGTH_LONG).show();
-				}
+				// Add the results
+				SearchActivity.this.results.addAll(results);
+				SearchActivity.this.resultsAdapter.notifyDataSetChanged();
 				// Turn progress icon off
 				setProgressBarIndeterminateVisibility(false);
+			}
+
+			@Override
+			public void onError(ErrorType error) {
+				ErrorShower.showError(error, SearchActivity.this);
 			}
 		});
 	}
