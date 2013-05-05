@@ -42,11 +42,34 @@ public class SearchActivity extends SherlockActivity {
 		setContentView(R.layout.activity_search);
 		
 		// Setup the SearchLoader that manages the search work
+		setupSearchLoader();
+		
+		// Setup ListView of the search results
+		setupUI();
+	}
+	
+	private void setupUI() {
+		this.recordList = (LoadingListView) findViewById(R.id.record_list);
+		this.recordList.setLoader(this.searchLoader);
+		this.recordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> list, View view, int pos, long id) {
+				// Start the MasterActivity when an item is clicked
+				Intent intent = new Intent(SearchActivity.this, MasterActivity.class);
+				intent.putExtra("master", SearchActivity.this.results.get(pos));
+				startActivity(intent);
+			}
+		});
+		this.resultsAdapter = new DiscogsSimpleMasterAdapter(SearchActivity.this, this.results);
+		this.recordList.setAdapter(this.resultsAdapter);
+	}
+	
+	private void setupSearchLoader() {
 		this.searchLoader = new SearchLoader();
 		this.searchLoader.setOnSearchStartedListener(new SearchLoader.OnSearchStartedListener() {
 			@Override
 			public void onSearchStarted() {
-				// Set UI
+				// Turn progress icon on
 				setProgressBarIndeterminateVisibility(true);
 			}
 		});
@@ -57,32 +80,16 @@ public class SearchActivity extends SherlockActivity {
 					// Add the results
 					SearchActivity.this.results.addAll(results);
 					SearchActivity.this.resultsAdapter.notifyDataSetChanged();
-					// Set UI
-					setProgressBarIndeterminateVisibility(false);
 				}
 				else
 				{
 					// Error occurred
 					Toast.makeText(SearchActivity.this, R.string.error1, Toast.LENGTH_LONG).show();
 				}
+				// Turn progress icon off
+				setProgressBarIndeterminateVisibility(false);
 			}
 		});
-		
-		// Setup ListView of the search results
-		this.recordList = (LoadingListView) findViewById(R.id.record_list);
-		this.recordList.setLoader(this.searchLoader);
-		this.recordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> list, View view, int pos,
-					long id) {
-				// Start the RecordActivity
-				Intent intent = new Intent(SearchActivity.this, MasterActivity.class);
-				intent.putExtra("master", SearchActivity.this.results.get(pos));
-				startActivity(intent);
-			}
-		});
-		this.resultsAdapter = new DiscogsSimpleMasterAdapter(SearchActivity.this, this.results);
-		this.recordList.setAdapter(this.resultsAdapter);
 	}
 
 	@Override
@@ -90,6 +97,7 @@ public class SearchActivity extends SherlockActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getSupportMenuInflater().inflate(R.menu.search, menu);
 		
+		// Search item in the action bar
 		MenuItem searchItem = menu.findItem(R.id.menu_search);
 		this.menuSearch = (SearchView) searchItem.getActionView();
 		

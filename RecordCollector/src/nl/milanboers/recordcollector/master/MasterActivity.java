@@ -1,76 +1,43 @@
 package nl.milanboers.recordcollector.master;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
-import nl.milanboers.recordcollector.discogs.DiscogsSimpleArtist;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
-import nl.milanboers.recordcollector.discogs.DiscogsTrack;
-import nl.milanboers.recordcollector.image.ImageActivity;
+import nl.milanboers.recordcollector.master.fragments.MasterRecordFragment;
+import nl.milanboers.recordcollector.master.fragments.MasterTracklistFragment;
+import nl.milanboers.recordcollector.tabs.TabsActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
-public class MasterActivity extends SherlockActivity {
+public class MasterActivity extends TabsActivity implements TabListener {
 	@SuppressWarnings("unused")
 	private static final String TAG = "RecordActivity";
 	
 	private DiscogsSimpleMaster simpleMaster;
-	private DiscogsMaster master;
 	
-	private ImageView thumbView;
-	private TextView titleView;
-	private TextView artistView;
-	private TableLayout tracklistLayout;
+	// Fragments
+	private MasterRecordFragment recordFragment;
+	private MasterTracklistFragment tracklistFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		this.simpleMaster = getIntent().getParcelableExtra("master");
 		
 		// Setup loading icon in ActionBar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		
 		setContentView(R.layout.activity_master);
 		
-		this.simpleMaster = getIntent().getParcelableExtra("master");
-		
-		this.thumbView = (ImageView) findViewById(R.id.master_thumb);
-		this.titleView = (TextView) findViewById(R.id.master_title);
-		this.artistView = (TextView) findViewById(R.id.master_artist);
-		this.tracklistLayout = (TableLayout) findViewById(R.id.master_tracklist);
-		
-		this.titleView.setText(this.simpleMaster.title);
-		
-		ImageLoadTask task = new ImageLoadTask(this.thumbView);
-		task.execute(this.simpleMaster.thumb);
-		
-		// Make sure clicking on the image opens the popup image
-		this.thumbView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MasterActivity.this, ImageActivity.class);
-				// Load the normal image if it's there, otherwise load the thumb.
-				if(MasterActivity.this.master.images != null && MasterActivity.this.master.images.size() > 0)
-					intent.putExtra("image", MasterActivity.this.master.images.get(0).uri);
-				else
-					intent.putExtra("image", MasterActivity.this.simpleMaster.thumb);
-				startActivity(intent);
-			}
-		});
+		setupTabs();
 		
 		// Load the detailed master
 		setProgressBarIndeterminateVisibility(true);
@@ -89,42 +56,27 @@ public class MasterActivity extends SherlockActivity {
 			protected void onPostExecute(DiscogsMaster master) {
 				setProgressBarIndeterminateVisibility(false);
 				
-				MasterActivity.this.master = master;
-				MasterActivity.this.loadMaster();
+				MasterActivity.this.recordFragment.setMaster(master);
+				MasterActivity.this.tracklistFragment.setTracklist(master.tracklist);
 			}
 		};
 		masterLoadTask.execute();
 	}
 	
-	private void loadMaster() {
-		if(this.master == null)
-			return;
+	private void setupTabs() {
+		// Setup the tabs on the page
 		
-		// Title
-		this.titleView.setText(this.master.title);
+		// Record fragment
+		this.recordFragment = new MasterRecordFragment();
+		// Pass the simpleMaster to the recordFragment
+		Bundle args = new Bundle();
+		args.putParcelable("simpleMaster", this.simpleMaster);
+		recordFragment.setArguments(args);
 		
-		// Artist(s)
-		List<String> artistNames = new ArrayList<String>();
-		for(DiscogsSimpleArtist artist : this.master.artists) {
-			artistNames.add(artist.name);
-		}
-		this.artistView.setText(TextUtils.join(", ", artistNames));
+		// Track listing fragment
+		this.tracklistFragment = new MasterTracklistFragment();
 		
-		// Tracklist
-		for(DiscogsTrack track : this.master.tracklist) {
-			LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View row = inflater.inflate(R.layout.row_track, null);
-
-			TextView positionView = (TextView) row.findViewById(R.id.row_track_pos);
-			TextView titleView = (TextView) row.findViewById(R.id.row_track_title);
-			TextView durationView = (TextView) row.findViewById(R.id.row_track_duration);
-			
-			positionView.setText(track.position);
-			titleView.setText(track.title);
-			durationView.setText(track.duration);
-			
-			this.tracklistLayout.addView(row);
-		}
+		setupTabs(Arrays.asList(this.recordFragment, this.tracklistFragment), R.id.master_pager);
 	}
 	
 	@Override
@@ -133,5 +85,4 @@ public class MasterActivity extends SherlockActivity {
 		getSupportMenuInflater().inflate(R.menu.record, menu);
 		return true;
 	}
-
 }
