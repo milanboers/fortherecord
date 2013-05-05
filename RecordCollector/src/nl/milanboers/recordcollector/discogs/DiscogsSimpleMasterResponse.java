@@ -7,4 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class DiscogsSimpleMasterResponse {
 	@SerializedName("results")
 	public List<DiscogsSimpleMaster> results;
+	
+	@SerializedName("pagination")
+	public DiscogsPagination pagination;
 }

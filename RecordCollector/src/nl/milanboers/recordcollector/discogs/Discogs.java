@@ -51,16 +51,16 @@ public class Discogs {
 		return rd;
 	}
 	
-	public List<DiscogsSimpleMaster> search(String query) throws ClientProtocolException, IOException {
+	public DiscogsSimpleMasterResponse search(String query) throws ClientProtocolException, IOException {
 		return this.search(query, 1);
 	}
 	
-	public List<DiscogsSimpleMaster> search(String query, int page) throws ClientProtocolException, IOException {
+	public DiscogsSimpleMasterResponse search(String query, int page) throws ClientProtocolException, IOException {
 		// Encode so spaces become +
 		query = URLEncoder.encode(query, "UTF-8");
 		Reader r = this.get("database/search?type=master&page=" + page + "&q=" + query);
 		DiscogsSimpleMasterResponse response = gson.fromJson(r, DiscogsSimpleMasterResponse.class);
-		return response.results;
+		return response;
 	}
 	
 	public DiscogsMaster master(int id) throws ClientProtocolException, IOException {

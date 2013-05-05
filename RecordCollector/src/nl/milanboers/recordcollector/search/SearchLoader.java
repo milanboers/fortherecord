@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
+import nl.milanboers.recordcollector.discogs.DiscogsSimpleMasterResponse;
 import nl.milanboers.recordcollector.views.LoadingListView;
 
 public class SearchLoader implements LoadingListView.Loader {
@@ -21,6 +22,8 @@ public class SearchLoader implements LoadingListView.Loader {
 	private boolean searching = false;
 	// The query that's being searched for
 	private String currentQuery;
+	// The amount of pages of the query that's being searched for
+	private int pages;
 	
 	public SearchLoader() { }
 	
@@ -37,32 +40,34 @@ public class SearchLoader implements LoadingListView.Loader {
 	// Changes the search query for the next operation
 	public void setQuery(String query) {
 		this.currentQuery = query;
+		this.pages = Integer.MAX_VALUE;
 	}
 	
 	@Override
 	public void load(final int page) {
-		// TODO: Make sure it stops at the right page
-		// If there's no query or it's already loading, we ignore this
-		if(this.currentQuery == null || this.searching == true)
+		// If there's no query, it's already loading, or we're past the final page, we ignore this
+		if(this.currentQuery == null || this.searching == true || page > this.pages)
 			return;
 		
 		// Make Search Task
-		AsyncTask<Void, Void, List<DiscogsSimpleMaster>> st = new AsyncTask<Void, Void, List<DiscogsSimpleMaster>>() {
+		AsyncTask<Void, Void, DiscogsSimpleMasterResponse> st = new AsyncTask<Void, Void, DiscogsSimpleMasterResponse>() {
 			@Override
-			protected List<DiscogsSimpleMaster> doInBackground(Void... params) {
+			protected DiscogsSimpleMasterResponse doInBackground(Void... params) {
 				try {
 					return Discogs.getInstance().search(SearchLoader.this.currentQuery, page);
 				} catch (Exception e) {
+					// TODO: nice error?
 					e.printStackTrace();
 					return null;
 				}
 			}
 			
 			@Override
-			protected void onPostExecute(List<DiscogsSimpleMaster> results) {
+			protected void onPostExecute(DiscogsSimpleMasterResponse response) {
 				SearchLoader.this.searching = false;
+				SearchLoader.this.pages = response.pagination.pages;
 				if(SearchLoader.this.onSearchCompletedListener != null)
-					SearchLoader.this.onSearchCompletedListener.onSearchCompleted(results);
+					SearchLoader.this.onSearchCompletedListener.onSearchCompleted(response.results);
 			}
 		};
 		
