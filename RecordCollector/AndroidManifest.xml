@@ -26,19 +26,23 @@
         </activity>
         <activity
             android:name="nl.milanboers.recordcollector.search.SearchActivity"
-            android:label="@string/title_activity_search" >
+            android:label="@string/title_activity_search"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
         </activity>
         <activity
             android:name="nl.milanboers.recordcollector.master.MasterActivity"
-            android:label="@string/title_activity_record" >
+            android:label="@string/title_activity_record"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
         </activity>
         <activity
             android:name="nl.milanboers.recordcollector.artist.ArtistActivity"
-            android:label="@string/title_activity_artist" >
+            android:label="@string/title_activity_artist"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
         </activity>
         <activity
             android:name="nl.milanboers.recordcollector.image.ImageActivity"
-            android:label="@string/title_activity_image" >
+            android:label="@string/title_activity_image"
+            android:configChanges="orientation|keyboardHidden|screenSize" >
         </activity>
     </application>
 
