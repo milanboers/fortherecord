@@ -1,33 +1,33 @@
-package nl.milanboers.recordcollector.master;
+package nl.milanboers.recordcollector.artist;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.http.client.ClientProtocolException;
 
-import com.actionbarsherlock.view.Menu;
-
 import nl.milanboers.recordcollector.ErrorShower;
 import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.R;
+import nl.milanboers.recordcollector.artist.fragments.ArtistProfileFragment;
+import nl.milanboers.recordcollector.artist.fragments.ArtistRecordsFragment;
 import nl.milanboers.recordcollector.discogs.Discogs;
-import nl.milanboers.recordcollector.discogs.DiscogsMaster;
-import nl.milanboers.recordcollector.master.fragments.MasterRecordFragment;
-import nl.milanboers.recordcollector.master.fragments.MasterTracklistFragment;
+import nl.milanboers.recordcollector.discogs.DiscogsArtist;
 import nl.milanboers.recordcollector.tabs.TabsActivity;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
 
-public class MasterActivity extends TabsActivity {
+import com.actionbarsherlock.view.Menu;
+
+public class ArtistActivity extends TabsActivity {
 	@SuppressWarnings("unused")
 	private static final String TAG = "RecordActivity";
 	
 	private int id;
 	
-	// Fragments
-	private MasterRecordFragment recordFragment;
-	private MasterTracklistFragment tracklistFragment;
+	private ArtistProfileFragment profileFragment;
+	private ArtistRecordsFragment recordsFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,41 +38,39 @@ public class MasterActivity extends TabsActivity {
 		// Setup loading icon in ActionBar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		
-		setContentView(R.layout.activity_master);
+		setContentView(R.layout.activity_artist);
 		
 		setupTabs();
 		
-		// Load the detailed master
+		// Load the detailed artist
 		setProgressBarIndeterminateVisibility(true);
-		AsyncTask<Void, Void, DiscogsMaster> masterLoadTask = new MasterLoadTask();
-		masterLoadTask.execute();
+		AsyncTask<Void, Void, DiscogsArtist> artistLoadTask = new ArtistLoadTask();
+		artistLoadTask.execute();
 	}
 	
 	private void setupTabs() {
 		// Setup the tabs on the page
+		this.profileFragment = new ArtistProfileFragment();
+		this.recordsFragment = new ArtistRecordsFragment();
 		
-		// Record fragment
-		this.recordFragment = new MasterRecordFragment();
-		// Track listing fragment
-		this.tracklistFragment = new MasterTracklistFragment();
-		
-		setupTabs(Arrays.asList(this.recordFragment, this.tracklistFragment), R.id.master_pager);
+		setupTabs(Arrays.asList(this.profileFragment, this.recordsFragment), R.id.artist_pager);
 	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.master, menu);
+		getSupportMenuInflater().inflate(R.menu.artist, menu);
 		return true;
 	}
 	
-	private class MasterLoadTask extends AsyncTask<Void, Void, DiscogsMaster> {
+	private class ArtistLoadTask extends AsyncTask<Void, Void, DiscogsArtist> {
 		private ErrorType error;
 		
 		@Override
-		protected DiscogsMaster doInBackground(Void... params) {
+		protected DiscogsArtist doInBackground(Void... params) {
 			try {
-				return Discogs.getInstance().master(MasterActivity.this.id);
+				return Discogs.getInstance().artist(ArtistActivity.this.id);
 			} catch (ClientProtocolException e) {
 				this.error = ErrorType.PROTOCOL;
 				return null;
@@ -83,17 +81,17 @@ public class MasterActivity extends TabsActivity {
 		}
 		
 		@Override
-		protected void onPostExecute(DiscogsMaster master) {
-			if(master == null) {
+		protected void onPostExecute(DiscogsArtist artist) {
+			if(artist == null) {
 				// Error
-				ErrorShower.showError(this.error, MasterActivity.this);
+				ErrorShower.showError(this.error, ArtistActivity.this);
 				return;
 			}
 			// Success!
 			setProgressBarIndeterminateVisibility(false);
 			
-			MasterActivity.this.recordFragment.setMaster(master);
-			MasterActivity.this.tracklistFragment.setTracklist(master.tracklist);
+			ArtistActivity.this.profileFragment.setProfile(artist);
 		}
 	}
+
 }

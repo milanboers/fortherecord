@@ -8,9 +8,13 @@
     <string name="album_art">Album art</string>
     <string name="title_activity_record">RecordActivity</string>
     <string name="title_activity_image">ImageActivity</string>
+    <string name="title_activity_artist">ArtistActivity</string>
     
     <string name="record">Record</string>
     <string name="track_listing">Track Listing</string>
+    
+    <string name="profile">Profile</string>
+    <string name="records">Records</string>
     
     <string name="error_io">Could not fetch data. Do you have a network connection available?</string>
     <string name="error_protocol">Protocol error. Please contact the author of this app.</string>

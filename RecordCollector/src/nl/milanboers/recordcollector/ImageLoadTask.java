@@ -1,4 +1,4 @@
-package nl.milanboers.recordcollector.master;
+package nl.milanboers.recordcollector;
 
 import java.net.URL;
 

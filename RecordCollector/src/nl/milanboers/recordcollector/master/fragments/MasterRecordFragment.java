@@ -1,34 +1,34 @@
 package nl.milanboers.recordcollector.master.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import nl.milanboers.recordcollector.ImageLoadTask;
 import nl.milanboers.recordcollector.R;
+import nl.milanboers.recordcollector.artist.ArtistActivity;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleArtist;
 import nl.milanboers.recordcollector.image.ImageActivity;
-import nl.milanboers.recordcollector.master.ImageLoadTask;
 import nl.milanboers.recordcollector.tabs.TabFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MasterRecordFragment extends TabFragment {
 	@SuppressWarnings("unused")
-	private static String TAG = "MasterAFragment";
+	private static String TAG = "MasterRecordFragment";
 	
 	private DiscogsMaster master;
 	
 	private TextView titleView;
 	private ImageView thumbView;
-	private TextView artistView;
+	private LinearLayout artistsLayout;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class MasterRecordFragment extends TabFragment {
 		
 		this.titleView = (TextView) v.findViewById(R.id.master_title);
 		this.thumbView = (ImageView) v.findViewById(R.id.master_thumb);
-		this.artistView = (TextView) v.findViewById(R.id.master_artist);
+		this.artistsLayout = (LinearLayout) v.findViewById(R.id.master_artists);
 		
 		// Make sure clicking on the image opens the popup image
 		this.thumbView.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +62,20 @@ public class MasterRecordFragment extends TabFragment {
 		this.titleView.setText(this.master.title);
 		
 		// Artist(s)
-		List<String> artistNames = new ArrayList<String>();
-		for(DiscogsSimpleArtist artist : this.master.artists) {
-			artistNames.add(artist.name);
+		for(final DiscogsSimpleArtist artist : this.master.artists) {
+			Button btn = new Button(getActivity());
+			btn.setText(artist.name);
+			btn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					// Start artist activity
+					Intent intent = new Intent(getActivity(), ArtistActivity.class);
+					intent.putExtra("id", artist.id);
+					startActivity(intent);
+				}
+			});
+			this.artistsLayout.addView(btn);
 		}
-		this.artistView.setText(TextUtils.join(", ", artistNames));
 		
 		// Load the image
 		if(this.master.images.size() > 0) {

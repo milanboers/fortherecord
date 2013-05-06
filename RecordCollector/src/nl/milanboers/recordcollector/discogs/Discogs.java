@@ -67,4 +67,10 @@ public class Discogs {
 		DiscogsMaster master = gson.fromJson(r, DiscogsMaster.class);
 		return master;
 	}
+	
+	public DiscogsArtist artist(int id) throws ClientProtocolException, IOException {
+		Reader r = this.get("artists/" + id);
+		DiscogsArtist artist = gson.fromJson(r, DiscogsArtist.class);
+		return artist;
+	}
 }

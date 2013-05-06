@@ -33,6 +33,10 @@
             android:label="@string/title_activity_record" >
         </activity>
         <activity
+            android:name="nl.milanboers.recordcollector.artist.ArtistActivity"
+            android:label="@string/title_activity_artist" >
+        </activity>
+        <activity
             android:name="nl.milanboers.recordcollector.image.ImageActivity"
             android:label="@string/title_activity_image" >
         </activity>
