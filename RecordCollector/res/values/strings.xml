@@ -10,16 +10,16 @@
     <string name="title_activity_image">ImageActivity</string>
     <string name="title_activity_artist">ArtistActivity</string>
     <string name="favorite">Favorite</string>
-    
     <string name="record">Record</string>
     <string name="track_listing">Track Listing</string>
-    
     <string name="profile">Profile</string>
     <string name="records">Records</string>
-    
     <string name="error_io">Could not fetch data. Do you have a network connection available?</string>
     <string name="error_protocol">Protocol error. Please contact the author of this app.</string>
     <string name="error_inerror">There\'s an error, but I have no idea what the error is. This is bad stuff. Contact the author of the app.</string>
     <string name="error_notready">Could not complete action. Please wait for the current action to be completed...</string>
-    
+    <string name="title_activity_news">NewsActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="news">News</string>
+
 </resources>

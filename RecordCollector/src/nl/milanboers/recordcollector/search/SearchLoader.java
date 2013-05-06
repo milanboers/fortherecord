@@ -14,13 +14,21 @@ import nl.milanboers.recordcollector.errors.ErrorType;
 import nl.milanboers.recordcollector.views.LoadingListView;
 
 public class SearchLoader implements LoadingListView.Loader {
-	// Event interfaces
+	// Events
 	public static interface OnSearchStartedListener {
 		public void onSearchStarted();
+	}
+	private OnSearchStartedListener onSearchStartedListener;
+	public void setOnSearchStartedListener(OnSearchStartedListener onSearchStartedListener) {
+		this.onSearchStartedListener = onSearchStartedListener;
 	}
 	public static interface OnSearchCompletedListener {
 		public void onSearchCompleted(List<DiscogsSimpleMaster> results);
 		public void onError(ErrorType error);
+	}
+	private OnSearchCompletedListener onSearchCompletedListener;
+	public void setOnSearchCompletedListener(OnSearchCompletedListener onSearchCompletedListener) {
+		this.onSearchCompletedListener = onSearchCompletedListener;
 	}
 	
 	// Is it currently searching?
@@ -31,16 +39,6 @@ public class SearchLoader implements LoadingListView.Loader {
 	private int pages;
 	
 	public SearchLoader() { }
-	
-	// Events
-	private OnSearchStartedListener onSearchStartedListener;
-	public void setOnSearchStartedListener(OnSearchStartedListener onSearchStartedListener) {
-		this.onSearchStartedListener = onSearchStartedListener;
-	}
-	private OnSearchCompletedListener onSearchCompletedListener;
-	public void setOnSearchCompletedListener(OnSearchCompletedListener onSearchCompletedListener) {
-		this.onSearchCompletedListener = onSearchCompletedListener;
-	}
 	
 	// Changes the search query for the next operation
 	public void setQuery(String query) {

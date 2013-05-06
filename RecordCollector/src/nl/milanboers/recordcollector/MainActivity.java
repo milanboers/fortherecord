@@ -3,6 +3,7 @@ package nl.milanboers.recordcollector;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 
+import nl.milanboers.recordcollector.news.NewsActivity;
 import nl.milanboers.recordcollector.search.SearchActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -13,6 +14,7 @@ public class MainActivity extends SherlockActivity {
 	
 	// Components
 	private Button searchButton;
+	private Button newsButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +22,19 @@ public class MainActivity extends SherlockActivity {
 		setContentView(R.layout.activity_main);
 		
 		this.searchButton = (Button) findViewById(R.id.main_searchButton);
-		
 		this.searchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		this.newsButton = (Button) findViewById(R.id.main_newsButton);
+		this.newsButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, NewsActivity.class);
 				startActivity(intent);
 			}
 		});

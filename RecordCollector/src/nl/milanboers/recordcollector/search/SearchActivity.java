@@ -61,7 +61,7 @@ public class SearchActivity extends SherlockActivity {
 				startActivity(intent);
 			}
 		});
-		this.resultsAdapter = new DiscogsSimpleMasterAdapter(SearchActivity.this, this.results);
+		this.resultsAdapter = new DiscogsSimpleMasterAdapter(this, this.results);
 		this.recordList.setAdapter(this.resultsAdapter);
 	}
 	
