@@ -3,7 +3,7 @@ package nl.milanboers.recordcollector.search;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
+import com.google.gson.JsonSyntaxException;
 
 import android.os.AsyncTask;
 
@@ -80,8 +80,8 @@ public class SearchLoader implements LoadingListView.Loader {
 		protected DiscogsSimpleMasterResponse doInBackground(Void... params) {
 			try {
 				return Discogs.getInstance().search(SearchLoader.this.currentQuery, this.page);
-			} catch (ClientProtocolException e) {
-				this.error = ErrorType.PROTOCOL;
+			} catch (JsonSyntaxException e) {
+				this.error = ErrorType.JSON;
 				return null;
 			} catch (IOException e) {
 				this.error = ErrorType.IO;

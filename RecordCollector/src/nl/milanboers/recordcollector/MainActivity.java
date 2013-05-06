@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends SherlockActivity {
+	@SuppressWarnings("unused")
+	private static final String TAG = "MainActivity";
 	
 	// Components
 	private Button searchButton;

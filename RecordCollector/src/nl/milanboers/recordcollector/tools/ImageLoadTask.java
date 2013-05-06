@@ -1,4 +1,4 @@
-package nl.milanboers.recordcollector;
+package nl.milanboers.recordcollector.tools;
 
 import java.net.URL;
 
@@ -7,19 +7,15 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-public class ImageLoadTask extends AsyncTask<String, Void, Bitmap> {
-
-	private ImageView view;
-	
-	public ImageLoadTask(ImageView view) {
-		this.view = view;
-	}
+public class ImageLoadTask extends AsyncTask<Object, Void, Bitmap> {
+	private ImageView iv;
 	
 	@Override
-	protected Bitmap doInBackground(String... urlStr) {
-		URL url;
+	protected Bitmap doInBackground(Object... args) {
+		this.iv = (ImageView) args[0];
+		String urlStr = (String) args[1];
 		try {
-			url = new URL(urlStr[0]);
+			URL url = new URL(urlStr);
 			Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 			return bmp;
 		} catch (Exception e) {
@@ -31,6 +27,6 @@ public class ImageLoadTask extends AsyncTask<String, Void, Bitmap> {
 	@Override
 	protected void onPostExecute(Bitmap bmp) {
 		if(bmp != null)
-			this.view.setImageBitmap(bmp);
+			this.iv.setImageBitmap(bmp);
 	}
 }

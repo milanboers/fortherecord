@@ -1,12 +1,12 @@
 package nl.milanboers.recordcollector.master.fragments;
 
-import nl.milanboers.recordcollector.ImageLoadTask;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.artist.ArtistActivity;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleArtist;
 import nl.milanboers.recordcollector.image.ImageActivity;
 import nl.milanboers.recordcollector.tabs.TabFragment;
+import nl.milanboers.recordcollector.tools.ImageLoadTask;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -79,8 +79,7 @@ public class MasterRecordFragment extends TabFragment {
 		
 		// Load the image
 		if(this.master.images != null && this.master.images.size() > 0) {
-			ImageLoadTask task = new ImageLoadTask(this.thumbView);
-			task.execute(this.master.images.get(0).uri);
+			new ImageLoadTask().execute(this.thumbView, this.master.images.get(0).uri);
 		}
 	}
 

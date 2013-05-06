@@ -5,14 +5,16 @@ import java.util.List;
 
 import org.mcsoxford.rss.RSSItem;
 
-import nl.milanboers.recordcollector.R;
-import nl.milanboers.recordcollector.news.NewsFetcher.OnNewItemsListener;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 import android.widget.ListView;
 
-public class NewsActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+
+import nl.milanboers.recordcollector.R;
+import nl.milanboers.recordcollector.news.NewsFetcher.OnNewItemsListener;
+
+public class NewsActivity extends SherlockActivity {
 	@SuppressWarnings("unused")
 	private static final String TAG = "NewsActivity";
 	
@@ -45,7 +47,7 @@ public class NewsActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.news, menu);
+		getSupportMenuInflater().inflate(R.menu.news, menu);
 		return true;
 	}
 

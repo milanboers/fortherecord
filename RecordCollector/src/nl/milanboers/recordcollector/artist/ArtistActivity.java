@@ -3,8 +3,6 @@ package nl.milanboers.recordcollector.artist;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.apache.http.client.ClientProtocolException;
-
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.artist.fragments.ArtistProfileFragment;
 import nl.milanboers.recordcollector.artist.fragments.ArtistRecordsFragment;
@@ -22,6 +20,7 @@ import android.view.Window;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.gson.JsonSyntaxException;
 
 public class ArtistActivity extends TabsActivity {
 	@SuppressWarnings("unused")
@@ -118,10 +117,12 @@ public class ArtistActivity extends TabsActivity {
 		
 		@Override
 		protected DiscogsArtist doInBackground(Void... params) {
+			Log.v(TAG, "Loading artist " + ArtistActivity.this.id);
 			try {
 				return Discogs.getInstance().artist(ArtistActivity.this.id);
-			} catch (ClientProtocolException e) {
-				this.error = ErrorType.PROTOCOL;
+			} catch (JsonSyntaxException e) {
+				this.error = ErrorType.JSON;
+				e.printStackTrace();
 				return null;
 			} catch (IOException e) {
 				this.error = ErrorType.IO;

@@ -3,9 +3,8 @@ package nl.milanboers.recordcollector.master;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.apache.http.client.ClientProtocolException;
-
 import com.actionbarsherlock.view.Menu;
+import com.google.gson.JsonSyntaxException;
 
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.Discogs;
@@ -73,11 +72,13 @@ public class MasterActivity extends TabsActivity {
 		protected DiscogsMaster doInBackground(Void... params) {
 			try {
 				return Discogs.getInstance().master(MasterActivity.this.id);
-			} catch (ClientProtocolException e) {
-				this.error = ErrorType.PROTOCOL;
+			} catch (JsonSyntaxException e) {
+				this.error = ErrorType.JSON;
+				e.printStackTrace();
 				return null;
 			} catch (IOException e) {
 				this.error = ErrorType.IO;
+				e.printStackTrace();
 				return null;
 			}
 		}

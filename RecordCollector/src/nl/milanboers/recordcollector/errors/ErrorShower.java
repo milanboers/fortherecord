@@ -14,7 +14,7 @@ public class ErrorShower {
 			private static final long serialVersionUID = 515056387042943770L;
 			{
 				put(ErrorType.IO, ctx.getString(R.string.error_io));
-				put(ErrorType.PROTOCOL, ctx.getString(R.string.error_protocol));
+				put(ErrorType.JSON, ctx.getString(R.string.error_json));
 				put(ErrorType.NOTREADY, ctx.getString(R.string.error_notready));
 			}
 		};

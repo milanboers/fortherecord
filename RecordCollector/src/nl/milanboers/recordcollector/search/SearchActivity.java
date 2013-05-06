@@ -10,7 +10,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
-import nl.milanboers.recordcollector.discogs.DiscogsSimpleMasterAdapter;
 import nl.milanboers.recordcollector.errors.ErrorShower;
 import nl.milanboers.recordcollector.errors.ErrorType;
 import nl.milanboers.recordcollector.master.MasterActivity;

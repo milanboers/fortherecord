@@ -1,18 +1,14 @@
 package nl.milanboers.recordcollector.discogs;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URL;
 import java.net.URLEncoder;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * This is a singleton so no new object (and Gson object with it) has to be made
@@ -42,19 +38,17 @@ public class Discogs {
 		return instance;
 	}
 	
-	private BufferedReader get(String resource) throws ClientProtocolException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet request = new HttpGet("http://api.discogs.com/" + resource);
-		HttpResponse response = client.execute(request);
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		return rd;
+	private Reader get(String resource) throws IOException {
+		InputStream input = new URL("http://api.discogs.com/" + resource).openStream();
+		Reader r = new InputStreamReader(input, "UTF-8");
+		return r;
 	}
 	
-	public DiscogsSimpleMasterResponse search(String query) throws ClientProtocolException, IOException {
+	public DiscogsSimpleMasterResponse search(String query) throws JsonSyntaxException, IOException {
 		return this.search(query, 1);
 	}
 	
-	public DiscogsSimpleMasterResponse search(String query, int page) throws ClientProtocolException, IOException {
+	public DiscogsSimpleMasterResponse search(String query, int page) throws JsonSyntaxException, IOException {
 		// Encode so spaces become +
 		query = URLEncoder.encode(query, "UTF-8");
 		Reader r = this.get("database/search?type=master&page=" + page + "&q=" + query);
@@ -62,13 +56,13 @@ public class Discogs {
 		return response;
 	}
 	
-	public DiscogsMaster master(int id) throws ClientProtocolException, IOException {
+	public DiscogsMaster master(int id) throws JsonSyntaxException, IOException {
 		Reader r = this.get("masters/" + id);
 		DiscogsMaster master = gson.fromJson(r, DiscogsMaster.class);
 		return master;
 	}
 	
-	public DiscogsArtist artist(int id) throws ClientProtocolException, IOException {
+	public DiscogsArtist artist(int id) throws JsonSyntaxException, IOException {
 		Reader r = this.get("artists/" + id);
 		DiscogsArtist artist = gson.fromJson(r, DiscogsArtist.class);
 		return artist;

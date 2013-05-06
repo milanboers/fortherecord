@@ -1,5 +1,8 @@
 package nl.milanboers.recordcollector.discogs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,6 +15,12 @@ public class DiscogsSimpleMaster implements Parcelable {
 	@SerializedName("title")
 	public String title;
 	
+	@SerializedName("year")
+	public String year;
+	
+	@SerializedName("genre")
+	public List<String> genre;
+	
 	@SerializedName("thumb")
 	public String thumb;
 	
@@ -21,6 +30,9 @@ public class DiscogsSimpleMaster implements Parcelable {
 	public DiscogsSimpleMaster(Parcel in) {
 		this.id = in.readInt();
 		this.title = in.readString();
+		this.year = in.readString();
+		this.genre = new ArrayList<String>();
+		in.readList(this.genre, null);
 		this.thumb = in.readString();
 		this.type = in.readString();
 	}
@@ -34,6 +46,8 @@ public class DiscogsSimpleMaster implements Parcelable {
 	public void writeToParcel(Parcel dest, int flag) {
 		dest.writeInt(id);
 		dest.writeString(title);
+		dest.writeString(year);
+		dest.writeList(genre);
 		dest.writeString(thumb);
 		dest.writeString(type);
 	}
