@@ -13,6 +13,7 @@ public class ErrorShower {
 			{
 				put(ErrorType.IO, ctx.getString(R.string.error_io));
 				put(ErrorType.PROTOCOL, ctx.getString(R.string.error_protocol));
+				put(ErrorType.NOTREADY, ctx.getString(R.string.error_notready));
 			}
 		};
 		

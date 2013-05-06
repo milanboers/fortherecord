@@ -8,8 +8,8 @@ import nl.milanboers.recordcollector.discogs.DiscogsSimpleArtist;
 import nl.milanboers.recordcollector.image.ImageActivity;
 import nl.milanboers.recordcollector.tabs.TabFragment;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +43,10 @@ public class MasterRecordFragment extends TabFragment {
 			@Override
 			public void onClick(View v) {
 				// Load the normal image if it's there, otherwise don't do anything
-				Bitmap bmp = ((BitmapDrawable)MasterRecordFragment.this.thumbView.getDrawable()).getBitmap();
-				if(bmp != null) {
+				Drawable bmpd = MasterRecordFragment.this.thumbView.getDrawable();
+				if(bmpd != null && bmpd instanceof BitmapDrawable) {
 					Intent intent = new Intent(getActivity(), ImageActivity.class);
-					intent.putExtra("bitmap", bmp);
+					intent.putExtra("bitmap", ((BitmapDrawable)bmpd).getBitmap());
 					startActivity(intent);
 				}
 			}
@@ -61,7 +61,7 @@ public class MasterRecordFragment extends TabFragment {
 		// Title
 		this.titleView.setText(this.master.title);
 		
-		// Artist(s)
+		// Artist buttons
 		for(final DiscogsSimpleArtist artist : this.master.artists) {
 			Button btn = new Button(getActivity());
 			btn.setText(artist.name);
@@ -78,7 +78,7 @@ public class MasterRecordFragment extends TabFragment {
 		}
 		
 		// Load the image
-		if(this.master.images.size() > 0) {
+		if(this.master.images != null && this.master.images.size() > 0) {
 			ImageLoadTask task = new ImageLoadTask(this.thumbView);
 			task.execute(this.master.images.get(0).uri);
 		}
