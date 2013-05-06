@@ -1,4 +1,4 @@
-package nl.milanboers.recordcollector;
+package nl.milanboers.recordcollector.persistence;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

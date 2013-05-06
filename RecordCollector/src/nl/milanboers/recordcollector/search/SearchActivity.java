@@ -8,11 +8,11 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import nl.milanboers.recordcollector.ErrorShower;
-import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMasterAdapter;
+import nl.milanboers.recordcollector.errors.ErrorShower;
+import nl.milanboers.recordcollector.errors.ErrorType;
 import nl.milanboers.recordcollector.master.MasterActivity;
 import nl.milanboers.recordcollector.views.LoadingListView;
 import android.os.Bundle;

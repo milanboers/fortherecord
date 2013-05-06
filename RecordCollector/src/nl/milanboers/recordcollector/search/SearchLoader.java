@@ -7,10 +7,10 @@ import org.apache.http.client.ClientProtocolException;
 
 import android.os.AsyncTask;
 
-import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMaster;
 import nl.milanboers.recordcollector.discogs.DiscogsSimpleMasterResponse;
+import nl.milanboers.recordcollector.errors.ErrorType;
 import nl.milanboers.recordcollector.views.LoadingListView;
 
 public class SearchLoader implements LoadingListView.Loader {

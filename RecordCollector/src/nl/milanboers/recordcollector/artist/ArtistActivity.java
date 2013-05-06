@@ -5,14 +5,14 @@ import java.util.Arrays;
 
 import org.apache.http.client.ClientProtocolException;
 
-import nl.milanboers.recordcollector.ErrorShower;
-import nl.milanboers.recordcollector.ErrorType;
-import nl.milanboers.recordcollector.Persister;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.artist.fragments.ArtistProfileFragment;
 import nl.milanboers.recordcollector.artist.fragments.ArtistRecordsFragment;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsArtist;
+import nl.milanboers.recordcollector.errors.ErrorShower;
+import nl.milanboers.recordcollector.errors.ErrorType;
+import nl.milanboers.recordcollector.persistence.Persister;
 import nl.milanboers.recordcollector.tabs.TabsActivity;
 
 import android.os.AsyncTask;

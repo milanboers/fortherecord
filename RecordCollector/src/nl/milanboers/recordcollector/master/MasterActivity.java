@@ -7,11 +7,11 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.actionbarsherlock.view.Menu;
 
-import nl.milanboers.recordcollector.ErrorShower;
-import nl.milanboers.recordcollector.ErrorType;
 import nl.milanboers.recordcollector.R;
 import nl.milanboers.recordcollector.discogs.Discogs;
 import nl.milanboers.recordcollector.discogs.DiscogsMaster;
+import nl.milanboers.recordcollector.errors.ErrorShower;
+import nl.milanboers.recordcollector.errors.ErrorType;
 import nl.milanboers.recordcollector.master.fragments.MasterRecordFragment;
 import nl.milanboers.recordcollector.master.fragments.MasterTracklistFragment;
 import nl.milanboers.recordcollector.tabs.TabsActivity;

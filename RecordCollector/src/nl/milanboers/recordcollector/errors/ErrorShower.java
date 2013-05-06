@@ -1,7 +1,9 @@
-package nl.milanboers.recordcollector;
+package nl.milanboers.recordcollector.errors;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import nl.milanboers.recordcollector.R;
 
 import android.content.Context;
 import android.widget.Toast;

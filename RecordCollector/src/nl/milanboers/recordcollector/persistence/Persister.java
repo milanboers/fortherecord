@@ -1,4 +1,4 @@
-package nl.milanboers.recordcollector;
+package nl.milanboers.recordcollector.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;
