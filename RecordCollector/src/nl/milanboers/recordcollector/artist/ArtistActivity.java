@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.artist;
 
 import java.io.IOException;
@@ -25,43 +29,43 @@ import com.google.gson.JsonSyntaxException;
 public class ArtistActivity extends TabsActivity {
 	@SuppressWarnings("unused")
 	private static final String TAG = "RecordActivity";
-	
+
 	private int id;
 	private DiscogsArtist artist;
-	
+
 	private ArtistProfileFragment profileFragment;
 	private ArtistRecordsFragment recordsFragment;
-	
+
 	private Persister persister;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		this.id = getIntent().getIntExtra("id", -1);
 		this.persister = new Persister(this);
-		
+
 		// Setup loading icon in ActionBar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		
+
 		setContentView(R.layout.activity_artist);
-		
+
 		setupTabs();
-		
+
 		// Load the detailed artist
 		setProgressBarIndeterminateVisibility(true);
 		AsyncTask<Void, Void, DiscogsArtist> artistLoadTask = new ArtistLoadTask();
 		artistLoadTask.execute();
 	}
-	
+
 	private void setupTabs() {
 		// Setup the tabs on the page
 		this.profileFragment = new ArtistProfileFragment();
 		this.recordsFragment = new ArtistRecordsFragment();
-		
+
 		setupTabs(Arrays.asList(this.profileFragment, this.recordsFragment), R.id.artist_pager);
 	}
-	
+
 	/**
 	 * Favorites or unfavorites the current artist
 	 */
@@ -87,20 +91,20 @@ public class ArtistActivity extends TabsActivity {
 			ErrorShower.showError(ErrorType.NOTREADY, this);
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getSupportMenuInflater().inflate(R.menu.artist, menu);
-		
+
 		// Set fav icon
 		if(this.persister.isFavArtist(this.id)) {
 			menu.findItem(R.id.artist_fav).setIcon(android.R.drawable.btn_star_big_on);
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
@@ -111,10 +115,10 @@ public class ArtistActivity extends TabsActivity {
 				return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	private class ArtistLoadTask extends AsyncTask<Void, Void, DiscogsArtist> {
 		private ErrorType error;
-		
+
 		@Override
 		protected DiscogsArtist doInBackground(Void... params) {
 			Log.v(TAG, "Loading artist " + ArtistActivity.this.id);
@@ -129,7 +133,7 @@ public class ArtistActivity extends TabsActivity {
 				return null;
 			}
 		}
-		
+
 		@Override
 		protected void onPostExecute(DiscogsArtist artist) {
 			if(artist == null) {
@@ -140,7 +144,7 @@ public class ArtistActivity extends TabsActivity {
 			// Success!
 			ArtistActivity.this.artist = artist;
 			setProgressBarIndeterminateVisibility(false);
-			
+
 			ArtistActivity.this.profileFragment.setProfile(artist);
 		}
 	}

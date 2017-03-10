@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.search;
 
 import java.io.IOException;
@@ -30,33 +34,33 @@ public class SearchLoader implements LoadingListView.Loader {
 	public void setOnSearchCompletedListener(OnSearchCompletedListener onSearchCompletedListener) {
 		this.onSearchCompletedListener = onSearchCompletedListener;
 	}
-	
+
 	// Is it currently searching?
 	private boolean searching = false;
 	// The query that's being searched for
 	private String currentQuery;
 	// The amount of pages of the query that's being searched for
 	private int pages;
-	
+
 	public SearchLoader() { }
-	
+
 	// Changes the search query for the next operation
 	public void setQuery(String query) {
 		this.currentQuery = query;
 		this.pages = Integer.MAX_VALUE;
 	}
-	
+
 	@Override
 	public void load(final int page) {
 		// If there's no query, it's already loading, or we're past the final page, we ignore this
 		if(this.currentQuery == null || this.searching == true || page > this.pages)
 			return;
-		
+
 		// Make Search Task
 		AsyncTask<Void, Void, DiscogsSimpleMasterResponse> st = new SearchTask(page);
 		// Execute the search
 		st.execute();
-		
+
 		// Set loading flag
 		this.searching = true;
 		if(SearchLoader.this.onSearchStartedListener != null)
@@ -67,15 +71,15 @@ public class SearchLoader implements LoadingListView.Loader {
 	public boolean isLoading() {
 		return this.searching;
 	}
-	
+
 	private class SearchTask extends AsyncTask<Void, Void, DiscogsSimpleMasterResponse> {
 		private ErrorType error;
 		private int page;
-		
+
 		public SearchTask(int page) {
 			this.page = page;
 		}
-		
+
 		@Override
 		protected DiscogsSimpleMasterResponse doInBackground(Void... params) {
 			try {
@@ -88,7 +92,7 @@ public class SearchLoader implements LoadingListView.Loader {
 				return null;
 			}
 		}
-		
+
 		@Override
 		protected void onPostExecute(DiscogsSimpleMasterResponse response) {
 			if(response == null) {

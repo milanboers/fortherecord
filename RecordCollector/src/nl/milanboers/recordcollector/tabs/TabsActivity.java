@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.tabs;
 
 import java.util.List;
@@ -14,25 +18,25 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class TabsActivity extends SherlockFragmentActivity implements TabListener {
 	private ViewPager pager;
-	
+
 	protected void setupTabs(List<TabFragment> tabs, int pager) {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
+
 		// Add the fragments to the activity
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		
+
 		for(TabFragment fragment : tabs)
 		{
 			fragmentTransaction.add(pager, fragment);
 		}
-		
+
 		fragmentTransaction.commit();
-		
+
 		// Make a pagerAdapter and pass the simple master
 		FragmentPagerAdapter pagerAdapter = new TabsPagerAdapter(getSupportFragmentManager(), tabs);
-		
+
 		// Make a pager
 		this.pager = (ViewPager) findViewById(pager);
 		this.pager.setAdapter(pagerAdapter);
@@ -42,7 +46,7 @@ public class TabsActivity extends SherlockFragmentActivity implements TabListene
 				actionBar.setSelectedNavigationItem(pos);
 			}
 		});
-		
+
 		// Create the tabs
 		for(TabFragment tab : tabs) {
 			Tab t = actionBar.newTab().setText(tab.getNameId()).setTabListener(this);

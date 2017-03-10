@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.master.fragments;
 
 import java.util.List;
@@ -15,29 +19,29 @@ import android.widget.TextView;
 
 public class MasterTracklistFragment extends TabFragment {
 	private LinearLayout tracklistLayout;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_master_tracklist, container, false);
-		
+
 		this.tracklistLayout = (LinearLayout) v.findViewById(R.id.master_tracklist);
-		
+
 		return v;
 	}
-	
+
 	public void setTracklist(List<DiscogsTrack> tracklist) {
 		for(DiscogsTrack track : tracklist) {
 			LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View row = inflater.inflate(R.layout.row_track, null);
-			
+
 			TextView positionView = (TextView) row.findViewById(R.id.row_track_pos);
 			TextView titleView = (TextView) row.findViewById(R.id.row_track_title);
 			TextView durationView = (TextView) row.findViewById(R.id.row_track_duration);
-			
+
 			positionView.setText(track.position);
 			titleView.setText(track.title);
 			durationView.setText(track.duration);
-			
+
 			this.tracklistLayout.addView(row);
 		}
 	}

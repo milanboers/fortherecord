@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.tools;
 
 import java.net.URL;
@@ -9,7 +13,7 @@ import android.widget.ImageView;
 
 public class ImageLoadTask extends AsyncTask<Object, Void, Bitmap> {
 	private ImageView iv;
-	
+
 	@Override
 	protected Bitmap doInBackground(Object... args) {
 		this.iv = (ImageView) args[0];
@@ -23,7 +27,7 @@ public class ImageLoadTask extends AsyncTask<Object, Void, Bitmap> {
 			return null;
 		}
 	}
-	
+
 	@Override
 	protected void onPostExecute(Bitmap bmp) {
 		if(bmp != null)

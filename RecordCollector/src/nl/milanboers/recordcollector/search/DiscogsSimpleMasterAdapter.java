@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.search;
 
 import java.util.List;
@@ -17,12 +21,12 @@ import android.widget.TextView;
 
 public class DiscogsSimpleMasterAdapter extends ArrayAdapter<DiscogsSimpleMaster> {
 	private static final String TAG = "DiscogsSimpleMasterAdapter";
-	
+
 	private List<DiscogsSimpleMaster> results;
-	
+
 	public DiscogsSimpleMasterAdapter(Context context, List<DiscogsSimpleMaster> results) {
 		super(context, R.layout.list_record_item, results);
-		
+
 		this.results = results;
 	}
 
@@ -34,14 +38,14 @@ public class DiscogsSimpleMasterAdapter extends ArrayAdapter<DiscogsSimpleMaster
 			LayoutInflater vi = LayoutInflater.from(getContext());
 			v = vi.inflate(R.layout.list_record_item, null);
 		}
-		
+
 		DiscogsSimpleMaster result = this.results.get(position);
 		if(result != null) {
 			// Fill the widgets
 			TextView title = (TextView) v.findViewById(R.id.record_item_title);
 			TextView year = (TextView) v.findViewById(R.id.record_item_year);
 			TextView genres = (TextView) v.findViewById(R.id.record_item_genres);
-			
+
 			// Title
 			title.setText(result.title);
 			// Year

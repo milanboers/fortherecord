@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.discogs;
 
 import java.io.IOException;
@@ -13,41 +17,41 @@ import com.google.gson.JsonSyntaxException;
 /**
  * This is a singleton so no new object (and Gson object with it) has to be made
  * every time you load a next page or search something.
- * 
+ *
  * @author Milan Boers
- * 
+ *
  */
 public class Discogs {
 	@SuppressWarnings("unused")
 	private static final String TAG = "Discogs";
-	
+
 	public interface OnReadyListener {
 		public void onReady();
 	};
-	
+
 	private static Discogs instance;
 	private Gson gson;
-	
+
 	private Discogs() {
 		this.gson = new Gson();
 	}
-	
+
 	public static Discogs getInstance() {
 		if(instance == null)
 			instance = new Discogs();
 		return instance;
 	}
-	
+
 	private Reader get(String resource) throws IOException {
 		InputStream input = new URL("http://api.discogs.com/" + resource).openStream();
 		Reader r = new InputStreamReader(input, "UTF-8");
 		return r;
 	}
-	
+
 	public DiscogsSimpleMasterResponse search(String query) throws JsonSyntaxException, IOException {
 		return this.search(query, 1);
 	}
-	
+
 	public DiscogsSimpleMasterResponse search(String query, int page) throws JsonSyntaxException, IOException {
 		// Encode so spaces become +
 		query = URLEncoder.encode(query, "UTF-8");
@@ -55,13 +59,13 @@ public class Discogs {
 		DiscogsSimpleMasterResponse response = gson.fromJson(r, DiscogsSimpleMasterResponse.class);
 		return response;
 	}
-	
+
 	public DiscogsMaster master(int id) throws JsonSyntaxException, IOException {
 		Reader r = this.get("masters/" + id);
 		DiscogsMaster master = gson.fromJson(r, DiscogsMaster.class);
 		return master;
 	}
-	
+
 	public DiscogsArtist artist(int id) throws JsonSyntaxException, IOException {
 		Reader r = this.get("artists/" + id);
 		DiscogsArtist artist = gson.fromJson(r, DiscogsArtist.class);

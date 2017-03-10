@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.errors;
 
 import java.util.HashMap;
@@ -18,13 +22,13 @@ public class ErrorShower {
 				put(ErrorType.NOTREADY, ctx.getString(R.string.error_notready));
 			}
 		};
-		
+
 		String errorStr;
 		if(error != null)
 			errorStr = errorMessages.get(error);
 		else
 			errorStr = ctx.getString(R.string.error_inerror);
-		
+
 		Toast.makeText(ctx, errorStr, Toast.LENGTH_LONG).show();
 	}
 }

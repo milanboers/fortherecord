@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.master.fragments;
 
 import nl.milanboers.recordcollector.R;
@@ -23,21 +27,21 @@ import android.widget.TextView;
 public class MasterRecordFragment extends TabFragment {
 	@SuppressWarnings("unused")
 	private static String TAG = "MasterRecordFragment";
-	
+
 	private DiscogsMaster master;
-	
+
 	private TextView titleView;
 	private ImageView thumbView;
 	private LinearLayout artistsLayout;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_master_record, container, false);
-		
+
 		this.titleView = (TextView) v.findViewById(R.id.master_title);
 		this.thumbView = (ImageView) v.findViewById(R.id.master_thumb);
 		this.artistsLayout = (LinearLayout) v.findViewById(R.id.master_artists);
-		
+
 		// Make sure clicking on the image opens the popup image
 		this.thumbView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -51,16 +55,16 @@ public class MasterRecordFragment extends TabFragment {
 				}
 			}
 		});
-		
+
 		return v;
 	}
-	
+
 	public void setMaster(DiscogsMaster master) {
 		this.master = master;
-		
+
 		// Title
 		this.titleView.setText(this.master.title);
-		
+
 		// Artist buttons
 		for(final DiscogsSimpleArtist artist : this.master.artists) {
 			Button btn = new Button(getActivity());
@@ -76,7 +80,7 @@ public class MasterRecordFragment extends TabFragment {
 			});
 			this.artistsLayout.addView(btn);
 		}
-		
+
 		// Load the image
 		if(this.master.images != null && this.master.images.size() > 0) {
 			new ImageLoadTask().execute(this.thumbView, this.master.images.get(0).uri);

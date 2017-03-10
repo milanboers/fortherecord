@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.news;
 
 import java.util.ArrayList;
@@ -17,9 +21,9 @@ import nl.milanboers.recordcollector.news.NewsFetcher.OnNewItemsListener;
 public class NewsActivity extends SherlockActivity {
 	@SuppressWarnings("unused")
 	private static final String TAG = "NewsActivity";
-	
+
 	private ListView newsList;
-	
+
 	private List<RSSItem> news = new ArrayList<RSSItem>();
 	private NewsAdapter newsAdapter;
 
@@ -27,12 +31,12 @@ public class NewsActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_news);
-		
+
 		this.newsAdapter = new NewsAdapter(this, this.news);
-		
+
 		this.newsList = (ListView) findViewById(R.id.news_list);
 		this.newsList.setAdapter(this.newsAdapter);
-		
+
 		NewsFetcher f = new NewsFetcher();
 		f.setOnNewItemsListener(new OnNewItemsListener() {
 			@Override

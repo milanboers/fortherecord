@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.master;
 
 import java.io.IOException;
@@ -21,53 +25,53 @@ import android.view.Window;
 public class MasterActivity extends TabsActivity {
 	@SuppressWarnings("unused")
 	private static final String TAG = "RecordActivity";
-	
+
 	private int id;
-	
+
 	// Fragments
 	private MasterRecordFragment recordFragment;
 	private MasterTracklistFragment tracklistFragment;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		this.id = getIntent().getIntExtra("id", -1);
-		
+
 		// Setup loading icon in ActionBar
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		
+
 		setContentView(R.layout.activity_master);
-		
+
 		setupTabs();
-		
+
 		// Load the detailed master
 		setProgressBarIndeterminateVisibility(true);
 		AsyncTask<Void, Void, DiscogsMaster> masterLoadTask = new MasterLoadTask();
 		masterLoadTask.execute();
 	}
-	
+
 	private void setupTabs() {
 		// Setup the tabs on the page
-		
+
 		// Record fragment
 		this.recordFragment = new MasterRecordFragment();
 		// Track listing fragment
 		this.tracklistFragment = new MasterTracklistFragment();
-		
+
 		setupTabs(Arrays.asList(this.recordFragment, this.tracklistFragment), R.id.master_pager);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getSupportMenuInflater().inflate(R.menu.master, menu);
 		return true;
 	}
-	
+
 	private class MasterLoadTask extends AsyncTask<Void, Void, DiscogsMaster> {
 		private ErrorType error;
-		
+
 		@Override
 		protected DiscogsMaster doInBackground(Void... params) {
 			try {
@@ -82,7 +86,7 @@ public class MasterActivity extends TabsActivity {
 				return null;
 			}
 		}
-		
+
 		@Override
 		protected void onPostExecute(DiscogsMaster master) {
 			if(master == null) {
@@ -92,7 +96,7 @@ public class MasterActivity extends TabsActivity {
 			}
 			// Success!
 			setProgressBarIndeterminateVisibility(false);
-			
+
 			MasterActivity.this.recordFragment.setMaster(master);
 			MasterActivity.this.tracklistFragment.setTracklist(master.tracklist);
 		}

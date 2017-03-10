@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.tabs;
 
 import java.util.List;
@@ -12,7 +16,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
 	public TabsPagerAdapter(FragmentManager fm, List<TabFragment> fragments) {
 		super(fm);
-		
+
 		this.fragments = fragments;
 	}
 

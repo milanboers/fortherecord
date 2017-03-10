@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ *  * License, v. 2.0. If a copy of the MPL was not distributed with this
+ *   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 package nl.milanboers.recordcollector.news;
 
 import java.util.List;
@@ -15,10 +19,10 @@ import android.widget.TextView;
 
 public class NewsAdapter extends ArrayAdapter<RSSItem> {
 	List<RSSItem> items;
-	
+
 	public NewsAdapter(Context context, List<RSSItem> items) {
 		super(context, R.layout.list_news_item, items);
-		
+
 		this.items = items;
 	}
 
@@ -30,7 +34,7 @@ public class NewsAdapter extends ArrayAdapter<RSSItem> {
 			LayoutInflater vi = LayoutInflater.from(getContext());
 			v = vi.inflate(R.layout.list_news_item, null);
 		}
-		
+
 		RSSItem item = this.items.get(position);
 		if(item != null) {
 			// Fill the widgets
